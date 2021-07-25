@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.ExecutorService;
 
 @Component
 @ConditionalOnBean(TaskList.class)
@@ -15,7 +15,7 @@ public class FileGenerateWorker {
 
     @Qualifier(FileGenerateConfiguration.FILE_GENERATOR_THREAD_POOL)
     @Autowired
-    private ThreadPoolExecutor workers;
+    private ExecutorService workers;
 
     @Autowired
     private TaskList tasks;
@@ -28,7 +28,6 @@ public class FileGenerateWorker {
             workers.execute(new Worker(tasks));
         }
     }
-
 
     @Slf4j
     @ConditionalOnBean(FileGenerateWorker.class)
